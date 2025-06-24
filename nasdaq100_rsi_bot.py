@@ -18,7 +18,7 @@ print("CHAT_ID:", CHAT_ID)
 bot = Bot(token=BOT_TOKEN)
 
 def fetch_data():
-    df = yf.download("QQQ", period="5d", interval="15m")
+    df = yf.download("NQ=F", period="5d", interval="15m")
     df.dropna(inplace=True)
     return df
 
