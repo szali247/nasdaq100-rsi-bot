@@ -6,17 +6,21 @@ from dotenv import load_dotenv
 import os
 import asyncio
 import time
-import logging
 import os
+import logging
 
-# Set up logging
-LOG_FILE = "/tmp/nasdaq_bot.log"
+# Create 'logs' directory if it doesn't exist
+os.makedirs("logs", exist_ok=True)
 
+# Setup logging
 logging.basicConfig(
-    filename=LOG_FILE,
+    filename="logs/nasdaq_bot.log",
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s"
 )
+logger = logging.getLogger()
+
+
 
 # Load token and chat ID
 load_dotenv('bottoken.env')
