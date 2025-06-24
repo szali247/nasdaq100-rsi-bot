@@ -152,7 +152,16 @@ def main():
 if __name__ == "__main__":
     import threading
     import time
+    import logging
     from http.server import BaseHTTPRequestHandler, HTTPServer
+
+    # Setup logging
+    logging.basicConfig(
+        filename='nasdaq100_rsi_bot.log',
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
+    logger = logging.getLogger()
 
     # Background dummy server for Render's health checks
     def keep_alive():
@@ -168,12 +177,11 @@ if __name__ == "__main__":
     threading.Thread(target=keep_alive, daemon=True).start()
 
     # Main trading bot loop
-     while True:
-        logging.info("⏳ Running Nasdaq100 Bot cycle...")
+    while True:
+        logger.info("⏳ Running Nasdaq100 Bot cycle...")
         try:
             main()
-            logging.info("✅ Bot cycle completed successfully.")
         except Exception as e:
-            logging.error(f"❌ Error occurred: {e}")
-        logging.info("🔁 Waiting 15 minutes for next run...\n")
-        time.sleep(900)
+            logger.error(f"❌ Error occurred: {e}")
+        logger.info("✅ Waiting 15 minutes for next run...\n")
+        time.sleep(900)  # Wait 15 minutes
