@@ -139,6 +139,24 @@ def main():
 
 
 if __name__ == "__main__":
+    import threading
+    import time
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+
+    # Background dummy server for Render's health checks
+    def keep_alive():
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b"OK")
+        server = HTTPServer(("0.0.0.0", 8000), Handler)
+        server.serve_forever()
+
+    # Start dummy server in background
+    threading.Thread(target=keep_alive, daemon=True).start()
+
+    # Main trading bot loop
     while True:
         print("⏳ Running Nasdaq100 Bot cycle...")
         try:
@@ -146,4 +164,4 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"❌ Error occurred: {e}")
         print("✅ Waiting 15 minutes for next run...\n")
-        time.sleep(900)  # 900 seconds = 15 minutes
+        time.sleep(900)  # Wait 15 minutes
