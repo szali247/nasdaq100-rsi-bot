@@ -6,6 +6,17 @@ from dotenv import load_dotenv
 import os
 import asyncio
 import time
+import logging
+import os
+
+# Set up logging
+LOG_FILE = "/tmp/nasdaq_bot.log"
+
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
 
 # Load token and chat ID
 load_dotenv('bottoken.env')
@@ -157,11 +168,12 @@ if __name__ == "__main__":
     threading.Thread(target=keep_alive, daemon=True).start()
 
     # Main trading bot loop
-    while True:
-        print("⏳ Running Nasdaq100 Bot cycle...")
+     while True:
+        logging.info("⏳ Running Nasdaq100 Bot cycle...")
         try:
             main()
+            logging.info("✅ Bot cycle completed successfully.")
         except Exception as e:
-            print(f"❌ Error occurred: {e}")
-        print("✅ Waiting 15 minutes for next run...\n")
-        time.sleep(900)  # Wait 15 minutes
+            logging.error(f"❌ Error occurred: {e}")
+        logging.info("🔁 Waiting 15 minutes for next run...\n")
+        time.sleep(900)
