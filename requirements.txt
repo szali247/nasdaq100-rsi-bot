@@ -3,4 +3,5 @@ pandas
 ta
 python-telegram-bot
 python-dotenv
-
+tvdatafeed
+requests
